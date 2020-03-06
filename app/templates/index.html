@@ -16,8 +16,8 @@
 </head>
 
 <body class="container">
-    <div class="form-control-sm text-secondary text-right">docker pull jennerwein/whoami </div>
-    <h2 class="alert-success">Whoami on host {{ Werte.hostname }}</h2>
+    <div class="form-control-sm text-secondary text-right">docker pull jennerwein/flask-python-run:v1 </div>
+    <h2 class="alert-success">Whoami-py on host {{ Werte.hostname }}</h2>
     <table class="table table-striped table-bordered table-sm">
         <tbody>
             <tr>
@@ -67,28 +67,29 @@
             </tr>
             <tr>
                 <td>Number of CPUs:</td>
-                <td>8 FAKE </td>
+                <td>{{ Werte.osNumberOfCores }}</td>
             </tr>
             <tr>
-                <td>Total system memory:</td>
-                <td>1031970816 bytes FAKE</td>
+                <td>Total memory in kb:</td>
+                <td>{{ Werte.sysMemTotal }}</td>
             </tr>
             <tr>
-                <td>Free system memory:</td>
-                <td>77144064 bytes FAKE</td>
+                <td>Free memory in kb:</td>
+                <td>{{ Werte.sysMemFree }}</td>
             </tr>
             <tr>
-                <td>User name:</td>
-                <td>root FAKE</td>
+                <td>Current process ID:</td>
+                <td>{{ Werte.curPID }}</td>
             </tr>
-            <tr>
-                <td>Home directory:</td>
-                <td>/root FAKE</td>
-            </tr>
+
             <tr>
                 <td>Python version:</td>
                 <td>{{ Werte.pythonVersion }}</td>
             </tr>
+            <!-- <tr>
+                <td>Für Testzwecke:<br >request.environ:</td>
+                <td>{{ request.environ }}</td>
+            </tr> -->
         </tbody>
     </table>
 </body>

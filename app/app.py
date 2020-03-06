@@ -5,6 +5,7 @@ import urllib.request
 from flask import Flask, render_template, request, jsonify  # pip3 install flask
 import netifaces    # https://github.com/al45tair/netifaces
 import platform
+import os           # https://docs.python.org/3/library/os.html
 
 from zeit import zeitdauer
 
@@ -28,6 +29,22 @@ def get_ip():
 def werteBerechnung(requestUmgebung):
     global anzahlAufrufe
     anzahlAufrufe = anzahlAufrufe+1
+
+    with open('/proc/meminfo') as file:
+        for line in file:
+            if 'MemTotal' in line:
+                MemTotal_in_kb = line.split()[1]
+            if 'MemFree' in line:
+                MemFree_in_kb = line.split()[1]
+                break
+
+    with open('/proc/meminfo') as file:
+        for line in file:
+            if 'MemTotal' in line:
+                MemTotal_in_kb = line.split()[1]
+                break
+
+
     Werte={ 
         "hostname" : socket.gethostname(),
         #"localAddress" : requestUmgebung['SERVER_NAME'],
@@ -47,6 +64,10 @@ def werteBerechnung(requestUmgebung):
         "osKernel" : platform.release(),
         "osVersion" : platform.version(),
         "processor" : platform.processor(),
+        "osNumberOfCores" : os.cpu_count(), # https://docs.python.org/3/library/os.html
+        "sysMemTotal": MemTotal_in_kb,
+        "sysMemFree": MemFree_in_kb,
+        "curPID": os.getpid(),
         "pythonVersion" : platform.python_version(),
         } 
     return Werte
