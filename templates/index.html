@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Whoami</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        thead {
+            text-align: left;
+        }
+
+        .container {}
+    </style>
+</head>
+
+<body class="container">
+    <div class="form-control-sm text-secondary text-right">docker pull jennerwein/whoami </div>
+    <h2 class="alert-success">Whoami on host {{ Werte.hostname }}</h2>
+    <table class="table table-striped table-bordered table-sm">
+        <tbody>
+            <tr>
+                <td>Local Address:</td>
+                <!-- <td>10.0.0.75</td> -->
+                <td>{{ Werte.localAddress }}</td>
+            </tr>
+            <tr>
+                <td>Local Port:</td>
+                <td>{{ Werte.localPort }}</td>
+            </tr>
+            <tr>
+                <td>Remote Address:</td>
+                <td>{{ Werte.remoteAddress }}</td>
+            </tr>
+            <tr>
+                <td>Remote Port:</td>
+                <td>{{ Werte.remotePort }}</td>
+            </tr>
+            <tr>
+                <td>Default Gateway IPv4:</td>
+                <td>{{ Werte.defaultGateway }}</td>
+            </tr>
+            <tr>
+                <td>Public IP:</td>
+                <td>{{ Werte.publicIP }}</td>
+            </tr>
+            <tr>
+                <td>Uptime:</td>
+                <td>{{ Werte.uptime }}</td>
+            </tr>
+            <tr>
+                <td>OS platform:</td>
+                <td>{{ Werte.osPlatform }}</td>
+            </tr>
+            <tr>
+                <td>OS Kernel:</td>
+                <td>{{ Werte.osKernel }}</td>
+            </tr>
+            <tr>
+                <td>OS Version:</td>
+                <td>{{ Werte.osVersion }}</td>
+            </tr>
+            <tr>
+                <td>Model of CPU:</td>
+                <td>{{ Werte.processor }}</td>
+            </tr>
+            <tr>
+                <td>Number of CPUs:</td>
+                <td>8 FAKE </td>
+            </tr>
+            <tr>
+                <td>Total system memory:</td>
+                <td>1031970816 bytes FAKE</td>
+            </tr>
+            <tr>
+                <td>Free system memory:</td>
+                <td>77144064 bytes FAKE</td>
+            </tr>
+            <tr>
+                <td>User name:</td>
+                <td>root FAKE</td>
+            </tr>
+            <tr>
+                <td>Home directory:</td>
+                <td>/root FAKE</td>
+            </tr>
+            <tr>
+                <td>Python version:</td>
+                <td>{{ Werte.pythonVersion }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>
