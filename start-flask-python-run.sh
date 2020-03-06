@@ -11,6 +11,6 @@ docker container rm ${NAME}
 docker rmi jennerwein/${NAME}:${TAG}
 docker build -t jennerwein/${NAME}:${TAG} .
 
-# Starten vom whoami-nodejs
+# Starten des Images
 docker run -p 8002:8080 --name ${NAME} --restart=always -d jennerwein/${NAME}:${TAG}
 
