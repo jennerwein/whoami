@@ -10,29 +10,34 @@ import platform     # https://docs.python.org/3/library/platform.html
 import os           # https://docs.python.org/3/library/os.html
 
 from zeit import zeitdauer
+from helper import humanbytes
 
 global anzahlAufrufe, startZeit
 anzahlAufrufe = 1
 startZeit = time.time()
 
-def get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        # doesn't even have to be reachable
-        s.connect(('10.255.255.255', 1))
-        IP = s.getsockname()[0]
-    except:
-        IP = '127.0.0.1'
-    finally:
-        s.close()
-    return IP
+# def get_ip():
+#     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+#     try:
+#         # doesn't even have to be reachable
+#         s.connect(('10.255.255.255', 1))
+#         IP = s.getsockname()[0]
+#     except:
+#         IP = '127.0.0.1'
+#     finally:
+#         s.close()
+#     return IP
 
+def get_ip():
+    hostname = socket.gethostname()
+    return socket.gethostbyname(hostname)
 
 def werteBerechnung(requestUmgebung):
     global anzahlAufrufe
     anzahlAufrufe = anzahlAufrufe+1
 
     Werte={ 
+        "anzahlAufrufe": anzahlAufrufe,
         "hostname" : socket.gethostname(),
         #"localAddress" : requestUmgebung['SERVER_NAME'],
         "localAddress" : get_ip(),
@@ -52,8 +57,8 @@ def werteBerechnung(requestUmgebung):
         "processor" : platform.processor(),
         "osNumberOfCores" : os.cpu_count(), # https://docs.python.org/3/library/os.html
         # Modul platform: https://docs.python.org/3/library/platform.html#module-platform
-        "sysMemTotal": psutil.virtual_memory().total,
-        "sysMemFree": psutil.virtual_memory().free,
+        "sysMemTotal": humanbytes(psutil.virtual_memory().total),
+        "sysMemFree": humanbytes(psutil.virtual_memory().free),
         "curPID": os.getpid(),
         "pythonVersion" : platform.python_version(),
         } 
