@@ -3,6 +3,7 @@ import socket
 import urllib.request
 
 from flask import Flask, render_template, request, jsonify  # pip3 install flask
+from requests import get
 import netifaces    # https://github.com/al45tair/netifaces
 import platform
 import os           # https://docs.python.org/3/library/os.html
@@ -30,20 +31,17 @@ def werteBerechnung(requestUmgebung):
     global anzahlAufrufe
     anzahlAufrufe = anzahlAufrufe+1
 
-    with open('/proc/meminfo') as file:
-        for line in file:
-            if 'MemTotal' in line:
-                MemTotal_in_kb = line.split()[1]
-            if 'MemFree' in line:
-                MemFree_in_kb = line.split()[1]
-                break
-
-    with open('/proc/meminfo') as file:
-        for line in file:
-            if 'MemTotal' in line:
-                MemTotal_in_kb = line.split()[1]
-                break
-
+    try:
+        with open('/proc/meminfo') as file:
+            for line in file:
+                if 'MemTotal' in line:
+                    MemTotal_in_kb = line.split()[1]
+                if 'MemFree' in line:
+                    MemFree_in_kb = line.split()[1]
+                    break
+    except:
+        MemTotal_in_kb = "no Value"
+        MemFree_in_kb = "no Value"
 
     Werte={ 
         "hostname" : socket.gethostname(),
@@ -55,7 +53,8 @@ def werteBerechnung(requestUmgebung):
         # Modul netifaces: https://github.com/al45tair/netifaces
         "defaultGateway": netifaces.gateways()['default'][netifaces.AF_INET][0],
         # Public IP mit der API: https://api.ident.me/
-        "publicIP": urllib.request.urlopen('https://ident.me').read().decode('utf8'),
+        "publicIP4": get('https://api.ipify.org').text,
+        "publicIP6": get('https://api6.ipify.org').text,
         "uptime" : zeitdauer(int(time.time()-startZeit)),
         # Modul psutil: https://psutil.readthedocs.io/en/latest/
 
