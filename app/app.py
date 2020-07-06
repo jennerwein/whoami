@@ -1,11 +1,12 @@
 import time
 import socket
+import psutil
 import urllib.request
 
 from flask import Flask, render_template, request, jsonify  # pip3 install flask
 from requests import get
 import netifaces    # https://github.com/al45tair/netifaces
-import platform
+import platform     # https://docs.python.org/3/library/platform.html
 import os           # https://docs.python.org/3/library/os.html
 
 from zeit import zeitdauer
@@ -31,18 +32,6 @@ def werteBerechnung(requestUmgebung):
     global anzahlAufrufe
     anzahlAufrufe = anzahlAufrufe+1
 
-    try:
-        with open('/proc/meminfo') as file:
-            for line in file:
-                if 'MemTotal' in line:
-                    MemTotal_in_kb = line.split()[1]
-                if 'MemFree' in line:
-                    MemFree_in_kb = line.split()[1]
-                    break
-    except:
-        MemTotal_in_kb = "no Value"
-        MemFree_in_kb = "no Value"
-
     Werte={ 
         "hostname" : socket.gethostname(),
         #"localAddress" : requestUmgebung['SERVER_NAME'],
@@ -57,15 +46,14 @@ def werteBerechnung(requestUmgebung):
         "publicIP6": get('https://api6.ipify.org').text,
         "uptime" : zeitdauer(int(time.time()-startZeit)),
         # Modul psutil: https://psutil.readthedocs.io/en/latest/
-
-        # Modul platform: https://docs.python.org/3/library/platform.html#module-platform
         "osPlatform" : platform.system(),
         "osKernel" : platform.release(),
         "osVersion" : platform.version(),
         "processor" : platform.processor(),
         "osNumberOfCores" : os.cpu_count(), # https://docs.python.org/3/library/os.html
-        "sysMemTotal": MemTotal_in_kb,
-        "sysMemFree": MemFree_in_kb,
+        # Modul platform: https://docs.python.org/3/library/platform.html#module-platform
+        "sysMemTotal": psutil.virtual_memory().total,
+        "sysMemFree": psutil.virtual_memory().free,
         "curPID": os.getpid(),
         "pythonVersion" : platform.python_version(),
         } 
