@@ -1,7 +1,7 @@
 #!/bin/sh
 
 TAG=v1
-NAME=flask-python-run
+NAME=whoami-py
 
 # Aufräumen
 docker container stop ${NAME}
