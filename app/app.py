@@ -35,9 +35,18 @@ def get_ip():
 def werteBerechnung(requestUmgebung):
     global anzahlAufrufe
     anzahlAufrufe = anzahlAufrufe+1
+    global Color
+    HexValue = (socket.gethostname() + "FFFFFFFF")[0:6]
+    try: 
+        if int(HexValue, 16) >= 0:
+            Color = "#" + HexValue
+    except:
+        Color = "#cccccc"
+    print(Color)
 
     Werte={ 
         "anzahlAufrufe": anzahlAufrufe,
+        "Color": Color,
         "hostname" : socket.gethostname(),
         #"localAddress" : requestUmgebung['SERVER_NAME'],
         "localAddress" : get_ip(),
@@ -68,11 +77,7 @@ app = Flask(__name__, template_folder="templates")
 @app.route('/')
 def home():
     """Landing page."""
-    #
-    print("#########################################################################")
-    print('Methode2: ', request.environ)
-    #####
-    # Zeilenweise Ausgabe der requestUmgebung als dictionary
+    ### Zeilenweise Ausgabe der requestUmgebung als dictionary
     # for key in request.environ:
     #     print(key, ':', request.environ[key])
     #
@@ -80,4 +85,5 @@ def home():
     return render_template('/index.html', Werte=Werte)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    # app.run(host='0.0.0.0', port=8080, debug=True)
+    app.run(host='0.0.0.0', port=8080)
