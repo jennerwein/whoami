@@ -17,13 +17,15 @@
 
 <body class="container">
     <div class="form-control-sm text-secondary text-right">docker pull jennerwein/whoami-py:latest </div>
-    <div>
-        <h2 class="alert-success">Whoami on {{ Werte.hostname }} &nbsp (# {{ Werte.anzahlAufrufe }})
-            <span style="float: right;background-color:{{ Werte.Color }};">
-                &nbsp&nbsp <span class="small">Color of {{ Werte.hostname }}</span>
-                &nbsp&nbsp</span></h2>
-
+    <!-- Überschrift -->
+    <div style="background-color:{{ Werte.bgColor }};color:{{ Werte.txtColor }};">
+        <h2>
+            &nbsp Whoami on {{ Werte.hostname }}
+            <span style="float: right"># {{ Werte.anzahlAufrufe }}&nbsp</span>
+        </h2>
     </div>
+    <!-- </div> -->
+
     <table class="table table-striped table-bordered table-sm">
         <tbody>
             <tr>

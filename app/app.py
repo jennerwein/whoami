@@ -10,7 +10,7 @@ import platform     # https://docs.python.org/3/library/platform.html
 import os           # https://docs.python.org/3/library/os.html
 
 from zeit import zeitdauer
-from helper import humanbytes
+import helper
 
 global anzahlAufrufe, startZeit
 anzahlAufrufe = 1
@@ -33,20 +33,50 @@ def get_ip():
     return socket.gethostbyname(hostname)
 
 def werteBerechnung(requestUmgebung):
+
     global anzahlAufrufe
     anzahlAufrufe = anzahlAufrufe+1
-    global Color
-    HexValue = (socket.gethostname() + "FFFFFFFF")[0:6]
-    try: 
-        if int(HexValue, 16) >= 0:
-            Color = "#" + HexValue
-    except:
-        Color = "#cccccc"
-    print(Color)
+    # Umgebungsvariable WHOAMICOLOR überprüfen
+    WHOAMICOLOR = os.getenv('WHOAMICOLOR')
+    print(WHOAMICOLOR)
+    if WHOAMICOLOR == None:
+        # Zufällige Hintergrundfarbe bestimmen, falls Hostname durch docker bestimmt
+        global bgColor
+        HexValue = (socket.gethostname() + "FFFFFFFF")[0:6]
+        try: 
+            if int(HexValue, 16) >= 0:
+                bgColor = "#" + HexValue
+        except:
+            bgColor = "#28a745" # Default Hintergrundfarbe
+    else:
+        # WHOAMICOLOR auswerten
+        if WHOAMICOLOR == "red":
+            bgColor = "#ff3030"
+        elif WHOAMICOLOR == "green":
+            bgColor = "#76ee00"
+        elif WHOAMICOLOR == "blue":
+            bgColor = "#4876ff"
+        elif WHOAMICOLOR == "yellow":
+            bgColor = "#eeee00"
+        elif WHOAMICOLOR == "purpel":
+            bgColor = "#9b30ff"
+        else:
+            bgColor = "#28a745" # Default Hintergrundfarbe
 
+    # Textfarbe in Abhängigkeit von der Hintergrundhelligkeit bestimmen
+    # print("Helligkeit ==> ", helper.rgb_brightness(bgColor))
+    if helper.rgb_brightness(bgColor) < 150:
+        txtColor = "#ffffff"
+    else:
+        txtColor = "#000000"
+
+
+
+    # Alle Werte zusammenstellen
     Werte={ 
         "anzahlAufrufe": anzahlAufrufe,
-        "Color": Color,
+        "bgColor": bgColor,
+        "txtColor": txtColor,
         "hostname" : socket.gethostname(),
         #"localAddress" : requestUmgebung['SERVER_NAME'],
         "localAddress" : get_ip(),
@@ -66,8 +96,8 @@ def werteBerechnung(requestUmgebung):
         "processor" : platform.processor(),
         "osNumberOfCores" : os.cpu_count(), # https://docs.python.org/3/library/os.html
         # Modul platform: https://docs.python.org/3/library/platform.html#module-platform
-        "sysMemTotal": humanbytes(psutil.virtual_memory().total),
-        "sysMemFree": humanbytes(psutil.virtual_memory().free),
+        "sysMemTotal": helper.humanbytes(psutil.virtual_memory().total),
+        "sysMemFree": helper.humanbytes(psutil.virtual_memory().free),
         "curPID": os.getpid(),
         "pythonVersion" : platform.python_version(),
         } 
@@ -85,5 +115,5 @@ def home():
     return render_template('/index.html', Werte=Werte)
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=8080, debug=True)
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=8080, debug=True)
+    # app.run(host='0.0.0.0', port=8080)

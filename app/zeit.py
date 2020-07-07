@@ -28,11 +28,14 @@ def zeitdauer(time):
     time %= 60
     seconds = time
     dauer=dauer+str(seconds)+' sec'
+    
+    ##### Testausdruck
+    # print("d:h:m:s-> %d:%d:%d:%d" % (days, hours, minutes, seconds))
 
-    print("d:h:m:s-> %d:%d:%d:%d" % (days, hours, minutes, seconds))
     return dauer
-    #return str(int(days))+':'+norm2(hours)+':'+norm2(minutes)+':'+norm2(seconds)
 
-time = int(2*60*60+7)
-# time = float(input("Input time in seconds: "))
-print(zeitdauer(time))
+##############################################################################
+if __name__ == '__main__':
+
+    time = int(2*60*60+7)
+    print(zeitdauer(time))
