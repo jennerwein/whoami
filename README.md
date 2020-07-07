@@ -1,4 +1,4 @@
-# whoami-py
+# whoami
 
 Whoami based on python with flask.
 
