@@ -1,7 +1,3 @@
-# https://hub.docker.com/_/python
-# The best Docker base image for your Python application (July 2019):
-# https://pythonspeed.com/articles/base-image-python-docker-images/
-# 
 FROM jennerwein/ubuntu-python3
 
 COPY requirements.txt ./
