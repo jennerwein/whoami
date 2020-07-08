@@ -9,47 +9,34 @@ import netifaces    # https://github.com/al45tair/netifaces
 import platform     # https://docs.python.org/3/library/platform.html
 import os           # https://docs.python.org/3/library/os.html
 
-from zeit import zeitdauer
 import helper
 
-global anzahlAufrufe, startZeit
-anzahlAufrufe = 1
-startZeit = time.time()
-
-# def get_ip():
-#     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#     try:
-#         # doesn't even have to be reachable
-#         s.connect(('10.255.255.255', 1))
-#         IP = s.getsockname()[0]
-#     except:
-#         IP = '127.0.0.1'
-#     finally:
-#         s.close()
-#     return IP
+global numberOfCalls, startupTime
+numberOfCalls = 1
+startupTime = time.time()
 
 def get_ip():
     hostname = socket.gethostname()
     return socket.gethostbyname(hostname)
 
-def werteBerechnung(requestUmgebung):
+def valueCalculation(requestEnvironment):
 
-    global anzahlAufrufe
-    anzahlAufrufe = anzahlAufrufe+1
-    # Umgebungsvariable WHOAMICOLOR überprüfen
+    global numberOfCalls
+    numberOfCalls = numberOfCalls+1
+    # Check environment variable WHOAMICOLOR
     WHOAMICOLOR = os.getenv('WHOAMICOLOR')
     print(WHOAMICOLOR)
     if WHOAMICOLOR == None:
-        # Zufällige Hintergrundfarbe bestimmen, falls Hostname durch docker bestimmt
+        # Define arbitrary background color depending on host name given by docker
         global bgColor
         HexValue = (socket.gethostname() + "FFFFFFFF")[0:6]
         try: 
             if int(HexValue, 16) >= 0:
                 bgColor = "#" + HexValue
         except:
-            bgColor = "#28a745" # Default Hintergrundfarbe
+            bgColor = "#28a745" # Default background color
     else:
-        # WHOAMICOLOR auswerten
+        # evaluate WHOAMICOLOR
         if WHOAMICOLOR == "red":
             bgColor = "#ff3030"
         elif WHOAMICOLOR == "green":
@@ -61,34 +48,37 @@ def werteBerechnung(requestUmgebung):
         elif WHOAMICOLOR == "purpel":
             bgColor = "#9b30ff"
         else:
-            bgColor = "#28a745" # Default Hintergrundfarbe
+            bgColor = "#28a745" # Default background color
 
-    # Textfarbe in Abhängigkeit von der Hintergrundhelligkeit bestimmen
-    # print("Helligkeit ==> ", helper.rgb_brightness(bgColor))
+    # Determine text color depending on the background brightness
+    # print("Brightness ==> ", helper.rgb_brightness(bgColor))
     if helper.rgb_brightness(bgColor) < 150:
         txtColor = "#ffffff"
     else:
         txtColor = "#000000"
 
+    # Public IP by: https://www.ipify.org/
+    publicIP4 = get('https://api.ipify.org').text
+    publicIP6 = get('https://api6.ipify.org').text
+    if publicIP4 == publicIP6:
+        publicIP6 = "n.a."
 
-
-    # Alle Werte zusammenstellen
+    # Collect all values
     Werte={ 
-        "anzahlAufrufe": anzahlAufrufe,
+        "numberOfCalls": numberOfCalls,
         "bgColor": bgColor,
         "txtColor": txtColor,
         "hostname" : socket.gethostname(),
-        #"localAddress" : requestUmgebung['SERVER_NAME'],
+        #"localAddress" : requestEnvironment['SERVER_NAME'],
         "localAddress" : get_ip(),
-        "localPort" : requestUmgebung['SERVER_PORT'],
-        "remoteAddress" : requestUmgebung['REMOTE_ADDR'],
-        "remotePort" : requestUmgebung['REMOTE_PORT'],
+        "localPort" : requestEnvironment['SERVER_PORT'],
+        "remoteAddress" : requestEnvironment['REMOTE_ADDR'],
+        "remotePort" : requestEnvironment['REMOTE_PORT'],
         # Modul netifaces: https://github.com/al45tair/netifaces
         "defaultGateway": netifaces.gateways()['default'][netifaces.AF_INET][0],
-        # Public IP mit der API: https://api.ident.me/
-        "publicIP4": get('https://api.ipify.org').text,
-        "publicIP6": get('https://api6.ipify.org').text,
-        "uptime" : zeitdauer(int(time.time()-startZeit)),
+        "publicIP4": publicIP4,
+        "publicIP6": publicIP6,
+        "uptime" : helper.duration(int(time.time()-startupTime)),
         # Modul psutil: https://psutil.readthedocs.io/en/latest/
         "osPlatform" : platform.system(),
         "osKernel" : platform.release(),
@@ -107,13 +97,13 @@ app = Flask(__name__, template_folder="templates")
 @app.route('/')
 def home():
     """Landing page."""
-    ### Zeilenweise Ausgabe der requestUmgebung als dictionary
+    ### Testing: Print request environment as dictionary
     # for key in request.environ:
     #     print(key, ':', request.environ[key])
     #
-    Werte=werteBerechnung(request.environ)
+    Werte=valueCalculation(request.environ)
     return render_template('/index.html', Werte=Werte)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
-    # app.run(host='0.0.0.0', port=8080)
+    # app.run(host='0.0.0.0', port=8080, debug=True)  # With debug mode
+    app.run(host='0.0.0.0', port=8080)

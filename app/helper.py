@@ -1,7 +1,47 @@
 import math
 
+##############################################################################
+# Prettyprint duration of time
+def duration(time):
+
+    def norm2(zahl):
+        return(("00"+str(zahl))[-2:])
+
+    gesamtzeit=time
+    dauer=''
+    # Tage
+    days = time // (24 * 3600)
+    if days == 1:
+        dauer=dauer+str(days)+' day '
+    if days > 1:
+        dauer=dauer+str(days)+' days '
+    #Stunden
+    time = time % (24 * 3600)
+    hours = time // 3600
+    if hours == 1:
+        dauer=dauer+str(hours)+' hour '
+    if hours > 1:
+        dauer=dauer+str(hours)+' hours '
+    #Minuten
+    time %= 3600
+    minutes = time // 60
+    if minutes >= 1:
+        dauer=dauer+str(minutes)+' min '
+    # Sekunden
+    time %= 60
+    seconds = time
+    dauer=dauer+str(seconds)+' sec'
+    
+    ##### Testausdruck
+    # print("d:h:m:s-> %d:%d:%d:%d" % (days, hours, minutes, seconds))
+
+    return dauer
+
+
+##############################################################################
+# Prettyprint KB, MB, GB, or TB string
 def humanbytes(B):
-   'Return the given bytes as a human friendly KB, MB, GB, or TB string'
+   '''Return the given bytes as a human friendly KB, MB, GB, or TB string'''
    B = float(B)
    KB = float(1024)
    MB = float(KB ** 2) # 1,048,576
@@ -32,6 +72,9 @@ def rgb_brightness(color):
 
 
 ##############################################################################
+##############################################################################
+##############################################################################
+
 if __name__ == '__main__':
 
    ##### Test humanbytes
@@ -41,3 +84,7 @@ if __name__ == '__main__':
 
    ##### Test rgb-brghtness
    print(rgb_brightness("#121314"))
+
+   ##### Test Prettyprint duration of time
+   time = int(2*60*60+7)
+   print(duration(time))
