@@ -1,3 +1,4 @@
+# My image with python, pip3, iproute2, curl, vim ...
 FROM jennerwein/ubuntu-python3
 
 COPY requirements.txt ./

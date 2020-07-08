@@ -1,7 +1,7 @@
 #!/bin/sh
 
-TAG=200707
-NAME=whoami-py
+TAG=200708
+NAME=whoami
 
 # Aufräumen
 docker container stop ${NAME}
@@ -13,5 +13,5 @@ docker rmi jennerwein/${NAME}:latest
 docker build -t jennerwein/${NAME}:latest -t jennerwein/${NAME}:${TAG} .
 
 # Starten des Images
-docker run -p 8002:8080 --name ${NAME} --restart=always -d jennerwein/${NAME}:${TAG}
+docker run -p 8080:8080 --name ${NAME} --restart=always -d jennerwein/${NAME}:${TAG}
 

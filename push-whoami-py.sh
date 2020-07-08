@@ -1,7 +1,9 @@
 #!/bin/sh
 
-TAG=200707
-NAME=whoami-py
+# If you want to push it manually
+
+TAG=200708
+NAME=whoami
 
 docker login
 
