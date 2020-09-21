@@ -3,7 +3,7 @@
 # If you want to push it manually
 
 GITHUB_NAME=jennerwein
-TAG=200921
+TAG=v1.1
 NAME=whoami
 
 docker login
