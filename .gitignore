@@ -1,9 +1,7 @@
-app/myvenv/
-node_modules/
-homepage/
-.wordpress/
-npm-debug.log
 !.gitignore
+
+# A README outside the GIT
+README-my.md
 
 # ignore packaged files
 *.7z

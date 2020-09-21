@@ -7,6 +7,7 @@ RUN pip3 install -r requirements.txt
 WORKDIR /app
 
 COPY ./app /app/
+EXPOSE 8080/tcp
 
 CMD [ "python3", "app.py" ]
 

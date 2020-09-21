@@ -1,17 +1,18 @@
 #!/bin/sh
 
-TAG=200708
+GITHUB_NAME=jennerwein
+TAG=200921
 NAME=whoami
 
-# Aufräumen
+# Clean up
 docker container stop ${NAME}
 docker container rm ${NAME}
 
-# Zuerst das Image bauen
-docker rmi jennerwein/${NAME}:${TAG}
-docker rmi jennerwein/${NAME}:latest
-docker build -t jennerwein/${NAME}:latest -t jennerwein/${NAME}:${TAG} .
+# First, build the image
+docker rmi ${GITHUB_NAME}/${NAME}:${TAG}
+docker rmi ${GITHUB_NAME}/${NAME}:latest
+docker build -t ${GITHUB_NAME}/${NAME}:latest -t ${GITHUB_NAME}/${NAME}:${TAG} .
 
-# Starten des Images
-docker run -p 8080:8080 --name ${NAME} --restart=always -d jennerwein/${NAME}:${TAG}
+# Start the image
+docker run -p 8080:8080 --name ${NAME} --restart=always -d ${GITHUB_NAME}/${NAME}:${TAG}
 
