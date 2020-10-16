@@ -58,10 +58,16 @@ def valueCalculation(requestEnvironment):
         txtColor = "#000000"
 
     # Public IP by: https://www.ipify.org/
-    publicIP4 = get('https://api.ipify.org').text
-    publicIP6 = get('https://api6.ipify.org').text
+    try:
+        publicIP4 = get('https://api.ipify.org').text
+    except:
+        publicIP4 = "no IPv4"
+    try:
+        publicIP6 = get('https://api6.ipify.org').text
+    except:
+        publicIP6 = "no IPv6"
     if publicIP4 == publicIP6:
-        publicIP6 = "n.a."
+        publicIP6 = "no IPv6"
 
     # Collect all values
     Werte={ 
