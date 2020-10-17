@@ -62,12 +62,13 @@ def valueCalculation(requestEnvironment):
         publicIP4 = get('https://api.ipify.org').text
     except:
         publicIP4 = "no IPv4"
-    try:
-        publicIP6 = get('https://api6.ipify.org').text
-    except:
-        publicIP6 = "no IPv6"
-    if publicIP4 == publicIP6:
-        publicIP6 = "no IPv6"
+    # commented out because of IPv6 Problems inside docker environment
+    # try:
+    #     publicIP6 = get('https://api6.ipify.org').text
+    # except:
+    #     publicIP6 = "no IPv6"
+    # if publicIP4 == publicIP6:
+    #     publicIP6 = "no IPv6"
 
     # Collect all values
     Werte={ 
@@ -83,7 +84,7 @@ def valueCalculation(requestEnvironment):
         # Modul netifaces: https://github.com/al45tair/netifaces
         "defaultGateway": netifaces.gateways()['default'][netifaces.AF_INET][0],
         "publicIP4": publicIP4,
-        "publicIP6": publicIP6,
+        # "publicIP6": publicIP6,
         "uptime" : helper.duration(int(time.time()-startupTime)),
         # Modul psutil: https://psutil.readthedocs.io/en/latest/
         "osPlatform" : platform.system(),
@@ -112,4 +113,4 @@ def home():
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=8080, debug=True)  # With debug mode
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='::', port=8080)
