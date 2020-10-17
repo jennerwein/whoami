@@ -1,7 +1,7 @@
 #!/bin/sh
 
 GITHUB_NAME=jennerwein
-TAG=v1.1
+TAG=latest
 NAME=whoami
 
 # Clean up
