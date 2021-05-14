@@ -62,13 +62,13 @@ def valueCalculation(requestEnvironment):
         publicIP4 = get('https://api.ipify.org').text
     except:
         publicIP4 = "no IPv4"
-    # commented out because of IPv6 Problems inside docker environment
-    # try:
-    #     publicIP6 = get('https://api6.ipify.org').text
-    # except:
-    #     publicIP6 = "no IPv6"
-    # if publicIP4 == publicIP6:
-    #     publicIP6 = "no IPv6"
+    # comment this out when IPv6 problems inside docker environment
+    try:
+        publicIP6 = get('https://api6.ipify.org').text
+    except:
+        publicIP6 = "no IPv6"
+    if publicIP4 == publicIP6:
+        publicIP6 = "no IPv6"
 
     # Collect all values
     Werte={ 

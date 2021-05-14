@@ -1,5 +1,5 @@
 !.gitignore
-myvenv
+venv
 
 # A README outside the GIT
 README-my.md
