@@ -8,6 +8,7 @@ from requests import get
 import netifaces    # https://github.com/al45tair/netifaces
 import platform     # https://docs.python.org/3/library/platform.html
 import os           # https://docs.python.org/3/library/os.html
+import hashlib
 
 import helper
 
@@ -29,7 +30,7 @@ def valueCalculation(requestEnvironment):
     if WHOAMICOLOR == None:
         # Define arbitrary background color depending on host name given by docker
         global bgColor
-        HexValue = (socket.gethostname() + "FFFFFFFF")[0:6]
+        HexValue = hashlib.sha1(socket.gethostname().encode("utf-8")).hexdigest()[0:6]
         try: 
             if int(HexValue, 16) >= 0:
                 bgColor = "#" + HexValue
