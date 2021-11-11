@@ -14,5 +14,5 @@ docker rmi ${GITHUB_NAME}/${NAME}:latest
 docker build -t ${GITHUB_NAME}/${NAME}:latest -t ${GITHUB_NAME}/${NAME}:${TAG} .
 
 # Start the image
-docker run -p 8080:8080 --name ${NAME} --restart=always -d ${GITHUB_NAME}/${NAME}:${TAG}
+docker run -p 80:80 --name ${NAME} --restart=always -d ${GITHUB_NAME}/${NAME}:${TAG}
 
