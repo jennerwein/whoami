@@ -1,5 +1,6 @@
 # My image with python, pip3, iproute2, curl, vim ...
-FROM jennerwein/ubuntu-python3
+# https://hub.docker.com/repository/docker/jennerwein/ubuntu-python3/general
+FROM jennerwein/ubuntu-python3:v1.2.2
 
 COPY requirements.txt ./
 RUN pip3 install -r requirements.txt
